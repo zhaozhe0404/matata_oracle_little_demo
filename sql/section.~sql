@@ -1,0 +1,81 @@
+
+create table section (
+    section_id number(8,0) not null,
+    course_no number(8,0) not null,
+    section_no number(3)not null,
+    start_date_time date,
+    location varchar2(50),
+    instructor_id number(8,0) not null,
+    capacity number(3,0),
+    created_by varchar2(30) not null,
+    created_date date not null,
+    modified_by varchar2(30) not null,
+    modified_date date not null
+);
+
+comment on table section is '根据课程建立的班级（课班）表';
+comment on column section.section_id is '课班ID';
+comment on column section.course_no is '课程ID';
+comment on column section.section_no is '课班编号';
+comment on column section.start_date_time is '课班开课的日期和时间';
+comment on column section.location is '教室';
+comment on column section.instructor_id is '教师ID';
+comment on column section.capacity is '课程允许最大的学生数量';
+comment on column section.created_by is '审计列——插入数据的用户';
+comment on column section.created_date is '审计列——数据插入的日期';
+comment on column section.modified_by is '审计列——执行最后一次更新的用户';
+comment on column section.modified_date is '审计列——最后一次更新的日期';
+
+
+create unique index section_uk_index on section (section_id);
+create index section_no_index on section (section_no);
+
+-- 使section_id自增
+-- 用sequence实现，同时用trigger辅助，在执行insert的时候不需要显示插入section_id
+-- 比较：
+-- 只有sequence没有trigger时插入数据：insert into section (section_id, section_no, course_no) values (section_sequence.nextval, 11, 23);
+-- 创建了sequence也创建了trigger时插入数据：insert into section (section_no, courese_no) values (11, 22);
+create sequence section_sequence increment by 1 minvalue 1 maxvalue 999999999 start with 1 nocache;
+create or replace trigger section_seq_auto_incr
+before insert on section -- 触发条件，当向section表中插入数据时
+for each row -- 对每一行插入都检查
+  begin
+    select section_sequence.nextval into : section.section_id from dual; -- 取得序列下一个值，插入到section表中
+  end;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
