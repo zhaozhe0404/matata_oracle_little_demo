@@ -19,3 +19,23 @@ begin
     dbms_output.put_line('v_num1==0');
   end if;
 end;
+
+
+declare
+  v_letter CHAR(1) := '&sv_letter';
+begin
+  if (v_letter >= 'A' and v_letter <= 'Z') or (v_letter >= 'a' and v_letter <= 'z')
+  then
+    dbms_output.put_line('This is a letter');
+  else
+    dbms_output.put_line('This is not a letter');
+    if v_letter between '0' and '9'
+    then
+      dbms_output.put_line('This is a number');
+    else
+      dbms_output.put_line('This is not a number');
+    end if;
+  end if;  
+end;
+
+
