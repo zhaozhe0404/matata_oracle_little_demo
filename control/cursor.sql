@@ -120,3 +120,62 @@ end;
 
 
 
+
+
+insert into instructor (instructor_id, salutation, first_name, last_name, street_address, zip, phone, created_date, created_by, modified_date, modified_by)
+values ('9001', 'sir', 'li', 'si', 'pingan', '4444', '13000', sysdate, 'zhaozhe', sysdate, 'zhaozhe');
+
+insert into instructor (instructor_id, salutation, first_name, last_name, street_address, zip, phone, created_date, created_by, modified_date, modified_by)
+values ('9002', 'sir', 'wang', 'wu', 'pingan', '4444', '13000', sysdate, 'zhaozhe', sysdate, 'zhaozhe');
+
+insert into instructor (instructor_id, salutation, first_name, last_name, street_address, zip, phone, created_date, created_by, modified_date, modified_by)
+values ('8997', 'sir', 'zhang', 'san', 'pingan', '4444', '13000', sysdate, 'zhaozhe', sysdate, 'zhaozhe');
+
+insert into instructor (instructor_id, salutation, first_name, last_name, street_address, zip, phone, created_date, created_by, modified_date, modified_by)
+values ('20201111', 'sir', 'liu', 'xi', 'pingan', '4444', '13000', sysdate, 'zhaozhe', sysdate, 'zhaozhe');
+
+-- 统计每个教师所有课程的注册费用
+-- course 注册费用
+-- section 教师id和课程id
+-- instructor 教师信息
+select c.instructor_id, sum(a.cost)
+from course a, section b, instructor c
+where a.course_no = b.course_no
+and b.instructor_id = c.instructor_id
+group by c.instructor_id;
+
+-- 游标实现，嵌套循环
+declare
+  v_instructor_id char(50);
+  v_amount number;
+  cursor cur_ins is
+    select c.instructor_id, c.first_name, c.last_name
+    from instructor c;
+  cursor cur_cost is
+    select a.cost
+    from course a, section b
+    where a.course_no = b.course_no
+    and b.instructor_id = v_instructor_id;
+begin
+  for v_ins in cur_ins
+    loop
+      v_instructor_id := v_ins.instructor_id;
+      v_amount := 0;
+      for v_cost in cur_cost
+        loop
+          v_amount := v_amount + nvl(v_cost.cost, 0);
+        end loop;
+      dbms_output.put_line('teacher: ' || v_ins.instructor_id || ' ' || v_ins.first_name || v_ins.last_name || ', amount: ' || v_amount);
+    end loop;
+  
+end;
+
+
+
+
+
+
+
+
+
+
