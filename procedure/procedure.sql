@@ -14,7 +14,7 @@ begin
        set cost = cost * .95
      where course_no = r_group_discount.course_no;
     dbms_output.put_line('A 5% discount has been given to ' ||
-                         r_group_discount.course_no || ' ' ||
+                         r_group_discount.course_no || ' ' || 
                          r_group_discount.description);
   end loop;
 end;
